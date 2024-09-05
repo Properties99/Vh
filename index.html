@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Al Alamien in 2 Mins - العالمين فى دقيقتين</title>
+    <link rel="stylesheet" href="property-styles.css">
+    <style>
+        /* Default background settings */
+        body {
+            transition: background 0.3s ease;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const phaseSelect = document.getElementById('phase');
+            const detailsSelect = document.getElementById('details');
+            const detailsDiv = document.getElementById('detailsDiv');
+            const body = document.body; // Select the body element
+
+            // Map phases to background styles (update as needed)
+            const backgroundStyles = {
+                'Mazzarine-Town مزارين تاون': 'url("mazzarine-town.jpg") no-repeat center center fixed',
+                'Latin District-الحى الاتينى': 'lightblue',
+                'Downtown-داون تاون العالمين': 'lightpink',
+                'Mazzarine Chalets': 'lightgreen',
+                'Mazzarine Apartments': 'lightyellow',
+                'Mazzarine Ria': 'lightgray',
+                'The Gate Towers': 'lightcoral',
+                'Tower C2': 'lightgoldenrodyellow'
+            };
+
+            // Map phases to details options
+            const phaseDetails = {
+                'Mazzarine-Town مزارين تاون': ['Corner', 'Middle'],
+                'Latin District-الحى الاتينى': ['Studio', '1Bed', '2Bed', '3Bed', '4Bed'],
+                'Downtown-داون تاون العالمين': ['2Bed', 'Penthouse'],
+                'Mazzarine Chalets': ['1', '2', '3'],
+                'Mazzarine Apartments': ['2Bed', '3Bed'],
+                'Mazzarine Ria': ['300 BUA, 4Bed', '346 BUA, 4Bed'],
+                'The Gate Towers': ['1', '2', '3'],
+                'Tower C2': ['1', '2', '3']
+            };
+
+            // Map details to specific information
+            const detailsInfo = {
+                'Corner': '340 BUA, 20.7M~3Y, 23.7M~5Y, 26.6M~7Y',
+                'Middle': '300 BUA, 17.6M~3Y, 19.8M~5Y, 22.4M~7Y',
+                '2Bed': '145 BUA ~ 9.5M',
+                '3Bed': '230-250 BUA ~ 12-14M',
+                'Studio': '66 BUA ~ 3.5M',
+                '1Bed': '90-119 BUA ~ 6.6M',
+                '2Bed-Latin': '120-170 BUA ~ 6.6M-9.6M',
+                '3Bed': '150-190 BUA ~ 9.6M-14M',
+                '4Bed-Latin': '201-250 BUA, 9.1M~5Y',
+                'Penthouse': '330 BUA ~ 14M',
+                '2Bed-Downtown': '7.7M',
+                '300 BUA, 4Bed': '300 BUA, 31.2M~5Y / 35.2M~7Y',
+                '346 BUA, 4Bed': '346 BUA, 32.4M~5Y / 36.4M~7Y'
+            };
+
+            phaseSelect.addEventListener('change', function() {
+                const selectedPhase = phaseSelect.value;
+                detailsSelect.innerHTML = '<option value="">--Choose phase details--</option>';
+                detailsDiv.innerHTML = ''; // Clear the details div
+
+                if (selectedPhase && phaseDetails[selectedPhase]) {
+                    phaseDetails[selectedPhase].forEach(detail => {
+                        const option = document.createElement('option');
+                        option.value = detail;
+                        option.textContent = detail;
+                        detailsSelect.appendChild(option);
+                    });
+                } else {
+                    for (let i = 0; i < detailsSelect.options.length; i++) {
+                        detailsSelect.options[i].style.display = '';
+                    }
+                }
+
+                if (selectedPhase) {
+                    body.style.background = backgroundStyles[selectedPhase];
+                    body.style.backgroundSize = selectedPhase === 'Mazzarine-Town مزارين تاون' ? 'cover' : '';
+                } else {
+                    body.style.background = ''; // Reset background if none selected
+                }
+            });
+
+            detailsSelect.addEventListener('change', function() {
+                const selectedDetail = detailsSelect.value;
+                const selectedPhase = phaseSelect.value;
+                const key = selectedPhase === 'Downtown-داون تاون العالمين' && selectedDetail === '2Bed' ? '2Bed-Downtown' :
+                            selectedPhase === 'Latin District-الحى الاتينى' && selectedDetail === '2Bed' ? '2Bed-Latin' :
+                            selectedPhase === 'Latin District-الحى الاتينى' && selectedDetail === '4Bed' ? '4Bed-Latin' :
+                            selectedDetail;
+
+                if (selectedDetail && detailsInfo[key]) {
+                    detailsDiv.innerHTML = `<p>${detailsInfo[key]}</p>`;
+                } else {
+                    detailsDiv.innerHTML = '';
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Al Alamien in 2 Mins - العالمين فى دقيقتين</h1>
+        <form id="propertyForm">
+            <label for="phase">Choose a Phase / اختر المرحلة:</label>
+            <select id="phase" required>
+                <option value="">--Choose a phase--</option>
+                <option value="Mazzarine-Town مزارين تاون">Mazzarine-Town مزارين تاون</option>
+                <option value="Latin District-الحى الاتينى">Latin District-الحى الاتينى</option>
+                <option value="Downtown-داون تاون العالمين">Downtown-داون تاون العالمين</option>
+                <option value="Mazzarine Chalets">Mazzarine Chalets</option>
+                <option value="Mazzarine Apartments">Mazzarine Apartments</option>
+                <option value="Mazzarine Ria">Mazzarine Ria</option>
+                <option value="The Gate Towers">The Gate Towers</option>
+                <option value="Tower C2">Tower C2</option>
+            </select>
+
+            <label for="details">Phase Details / تفاصيل المرحلة:</label>
+            <select id="details" required>
+                <option value="">--Choose phase details--</option>
+                <!-- Options will be populated dynamically based on the phase selected -->
+            </select>
+
+            <div id="detailsDiv"></div>
+        </form>
+    </div>
+</body>
+</html>
